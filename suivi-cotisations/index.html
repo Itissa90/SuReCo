@@ -1,0 +1,177 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta name="color-scheme" content="light">
+  <meta name="description" content="Application locale de suivi du recouvrement des cotisations sociales impayées.">
+  <title>Recouvrement · Suivi des cotisations impayées</title>
+  <link rel="icon" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 32 32'%3E%3Crect width='32' height='32' rx='7' fill='%230f172a'/%3E%3Cpath d='M16 5 25 8.5v7c0 5.2-3.6 9.1-9 10.3-5.4-1.2-9-5.1-9-10.3v-7L16 5Z' fill='%230f766e'/%3E%3Cpath d='M11.5 16.2l3 3 6-6.5' fill='none' stroke='%23fff' stroke-width='2.2' stroke-linecap='round' stroke-linejoin='round'/%3E%3C/svg%3E">
+  <link rel="stylesheet" href="assets/styles.css">
+  <script>
+    try {
+      var t = localStorage.getItem('suivi-cotisations-theme-v1');
+      if (t === 'amber' || t === 'red') document.documentElement.dataset.theme = t;
+    } catch (e) {}
+  </script>
+</head>
+<body>
+  <div class="boot-error" id="boot-error" role="alert" hidden>
+    <strong>L’application n’a pas pu démarrer.</strong>
+    <span id="boot-error-detail"></span>
+  </div>
+  <div class="app" id="app">
+    <div class="sidebar-backdrop" id="sidebar-backdrop"></div>
+    <aside class="sidebar" id="sidebar">
+      <div class="brand">
+        <div class="brand-mark" aria-hidden="true">
+          <svg viewBox="0 0 32 32" fill="none">
+            <path d="M16 3.5 27 8v8.2c0 6.2-4.3 10.9-11 12.3C9.3 27.1 5 22.4 5 16.2V8l11-4.5Z" fill="url(#g1)" stroke="rgba(255,255,255,.55)" stroke-width="1.2"/>
+            <path d="M11 16.4l3.2 3.2 6.6-7" stroke="#fff" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"/>
+            <defs>
+              <linearGradient id="g1" x1="5" y1="4" x2="27" y2="28" gradientUnits="userSpaceOnUse">
+                <stop stop-color="#3b82f6"/><stop offset="1" stop-color="#0f766e"/>
+              </linearGradient>
+            </defs>
+          </svg>
+        </div>
+        <div class="brand-text">
+          <strong>Recouvrement</strong>
+          <span>Cotisations sociales</span>
+        </div>
+      </div>
+
+      <div class="nav-group-label">Pilotage</div>
+      <nav class="nav" aria-label="Navigation principale">
+        <a class="nav-link" href="#/dashboard" data-route="dashboard">
+          <svg viewBox="0 0 24 24"><path d="M4 13h6V4H4v9Zm0 7h6v-5H4v5Zm10 0h6v-9h-6v9Zm0-16v5h6V4h-6Z"/></svg>
+          <span>Tableau de bord</span>
+        </a>
+        <a class="nav-link" href="#/employers" data-route="employers">
+          <svg viewBox="0 0 24 24"><path d="M4 21V6a2 2 0 0 1 2-2h7a2 2 0 0 1 2 2v15M9 8h1M9 12h1M9 16h1M15 21V10h3a2 2 0 0 1 2 2v9M3 21h18"/></svg>
+          <span>Employeurs</span>
+        </a>
+      </nav>
+
+      <div class="nav-group-label">Suivi</div>
+      <nav class="nav" aria-label="Navigation de suivi">
+        <a class="nav-link" href="#/monthly" data-route="monthly">
+          <svg viewBox="0 0 24 24"><path d="M8 2v4M16 2v4M3.5 9h17M5 4h14a2 2 0 0 1 2 2v13a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2V6a2 2 0 0 1 2-2Z"/><path d="M7 13h3M14 13h3M7 17h3M14 17h3"/></svg>
+          <span>Suivi mensuel</span>
+        </a>
+        <a class="nav-link" href="#/situation" data-route="situation">
+          <svg viewBox="0 0 24 24"><path d="M4 19V5M4 19h16"/><path d="M8 15v-4M12 15V7M16 15v-6"/></svg>
+          <span>Situation mensuelle</span>
+        </a>
+        <a class="nav-link" href="#/insured" data-route="insured">
+          <svg viewBox="0 0 24 24"><path d="M16 21v-2a4 4 0 0 0-4-4H6a4 4 0 0 0-4 4v2"/><circle cx="9" cy="7" r="4"/><path d="M22 21v-2a4 4 0 0 0-3-3.87M16 3.13a4 4 0 0 1 0 7.75"/></svg>
+          <span>Détail assurés</span>
+        </a>
+        <a class="nav-link" href="#/journal" data-route="journal">
+          <svg viewBox="0 0 24 24"><path d="M4 19.5A2.5 2.5 0 0 1 6.5 17H20V3H6.5A2.5 2.5 0 0 0 4 5.5v14Z"/><path d="M8 7h8M8 11h6"/></svg>
+          <span>Journal</span>
+        </a>
+        <a class="nav-link" href="#/schedules" data-route="schedules">
+          <svg viewBox="0 0 24 24"><path d="M12 6v6l4 2"/><circle cx="12" cy="12" r="9"/></svg>
+          <span>Échéanciers</span>
+        </a>
+      </nav>
+
+      <div class="nav-group-label">Configuration</div>
+      <nav class="nav" aria-label="Navigation de configuration">
+        <a class="nav-link" href="#/settings" data-route="settings">
+          <svg viewBox="0 0 24 24"><circle cx="12" cy="12" r="3"/><path d="M19.4 15a1.7 1.7 0 0 0 .34 1.87l.06.06a2 2 0 1 1-2.83 2.83l-.06-.06a1.7 1.7 0 0 0-1.87-.34 1.7 1.7 0 0 0-1 1.55V21a2 2 0 1 1-4 0v-.09a1.7 1.7 0 0 0-1.11-1.55 1.7 1.7 0 0 0-1.87.34l-.06.06a2 2 0 1 1-2.83-2.83l.06-.06a1.7 1.7 0 0 0 .34-1.87 1.7 1.7 0 0 0-1.55-1H3a2 2 0 1 1 0-4h.09a1.7 1.7 0 0 0 1.55-1.11 1.7 1.7 0 0 0-.34-1.87l-.06-.06a2 2 0 1 1 2.83-2.83l.06.06a1.7 1.7 0 0 0 1.87.34H9a1.7 1.7 0 0 0 1-1.55V3a2 2 0 1 1 4 0v.09a1.7 1.7 0 0 0 1 1.55 1.7 1.7 0 0 0 1.87-.34l.06-.06a2 2 0 1 1 2.83 2.83l-.06.06a1.7 1.7 0 0 0-.34 1.87V9a1.7 1.7 0 0 0 1.55 1H21a2 2 0 1 1 0 4h-.09a1.7 1.7 0 0 0-1.51 1Z"/></svg>
+          <span>Paramètres</span>
+        </a>
+      </nav>
+
+      <div class="sidebar-footer">
+        <div class="storage-status" id="storage-status">
+          <span class="status-dot" id="storage-dot"></span>
+          <div>
+            <strong id="storage-label">Sauvegarde locale</strong>
+            <span id="storage-time">—</span>
+          </div>
+        </div>
+        <div class="sidebar-hint">Données enregistrées dans ce navigateur.<br>Pensez à exporter une sauvegarde.</div>
+        <div class="sidebar-version" id="app-version">Version 1.2.0</div>
+      </div>
+    </aside>
+
+    <main class="main">
+      <header class="topbar">
+        <button class="icon-btn menu-btn" id="menu-btn" aria-label="Ouvrir le menu">
+          <svg viewBox="0 0 24 24"><path d="M4 6h16M4 12h16M4 18h16"/></svg>
+        </button>
+        <div class="page-heading">
+          <h1 id="page-title">Tableau de bord</h1>
+          <p id="page-subtitle">Vue d'ensemble du recouvrement</p>
+        </div>
+        <div class="topbar-actions">
+          <select class="select year-select" id="year-select" aria-label="Année de suivi"></select>
+          <span class="today-chip" id="today-chip" title="Date de référence des calculs">
+            <svg viewBox="0 0 24 24"><path d="M8 2v4M16 2v4M3.5 9h17M5 4h14a2 2 0 0 1 2 2v13a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2V6a2 2 0 0 1 2-2Z"/></svg>
+            <span id="today-label">—</span>
+          </span>
+          <button class="btn btn-ghost btn-sm" id="theme-toggle" title="Changer le thème de l’application" aria-haspopup="dialog">
+            <svg viewBox="0 0 24 24"><path d="M12 3a9 9 0 0 0 0 18h1.5a2 2 0 0 0 0-4H13a2 2 0 0 1 0-4h4a4 4 0 0 0 4-4c0-3.3-4-6-9-6Z"/><circle cx="7.5" cy="10.5" r="1"/><circle cx="10" cy="7" r="1"/><circle cx="15" cy="7.5" r="1"/></svg>
+            Thème
+          </button>
+          <button class="btn btn-ghost btn-sm" id="print-page" title="Imprimer cette vue ou l’enregistrer en PDF">
+            <svg viewBox="0 0 24 24"><path d="M6 9V3h12v6M6 18H4a2 2 0 0 1-2-2v-5a2 2 0 0 1 2-2h16a2 2 0 0 1 2 2v5a2 2 0 0 1-2 2h-2"/><rect x="6" y="14" width="12" height="8" rx="1"/></svg>
+            Imprimer
+          </button>
+          <button class="btn btn-ghost btn-sm" id="quick-export" title="Télécharger une sauvegarde complète">
+            <svg viewBox="0 0 24 24"><path d="M12 3v12M7 10l5 5 5-5M4 21h16"/></svg>
+            Exporter
+          </button>
+        </div>
+      </header>
+
+      <div class="print-head" aria-hidden="true">
+        <div class="print-brand">Recouvrement · Cotisations sociales</div>
+        <div class="print-title" id="print-title">—</div>
+        <div class="print-meta" id="print-meta">—</div>
+      </div>
+
+      <div class="storage-alert" id="storage-alert" role="alert" hidden>
+        <svg viewBox="0 0 24 24" aria-hidden="true"><path d="M12 9v4M12 17h.01M10.3 3.9 2.6 17.1A2 2 0 0 0 4.3 20h15.4a2 2 0 0 0 1.7-2.9L13.7 3.9a2 2 0 0 0-3.4 0Z"/></svg>
+        <div class="storage-alert-text">
+          <strong id="storage-alert-title">Stockage local presque plein</strong>
+          <span id="storage-alert-message"></span>
+        </div>
+        <button class="btn btn-sm" type="button" id="storage-alert-export">Exporter une sauvegarde</button>
+      </div>
+
+      <div class="view" id="view" tabindex="-1"></div>
+    </main>
+  </div>
+
+  <div class="modal-root" id="modal-root" hidden></div>
+  <div class="toast-root" id="toast-root" aria-live="polite"></div>
+
+  <script>
+    window.reportBootError = function (file) {
+      var box = document.getElementById('boot-error');
+      var detail = document.getElementById('boot-error-detail');
+      if (!box) return;
+      box.hidden = false;
+      if (detail) {
+        var message = 'Fichier manquant ou illisible : ' + file + '. Décompressez l’archive complète en gardant le dossier assets à côté de index.html.';
+        detail.textContent = detail.textContent ? detail.textContent + ' · ' + message : message;
+      }
+    };
+  </script>
+  <script src="assets/data.js" onerror="reportBootError('assets/data.js')"></script>
+  <script src="assets/core.js" onerror="reportBootError('assets/core.js')"></script>
+  <script src="assets/views.js" onerror="reportBootError('assets/views.js')"></script>
+  <script src="assets/app.js" onerror="reportBootError('assets/app.js')"></script>
+  <script>
+    window.addEventListener('DOMContentLoaded', function () {
+      if (typeof seedState !== 'function' || typeof renderCurrentView !== 'function') {
+        reportBootError('un script de l’application');
+      }
+    });
+  </script>
+</body>
+</html>
